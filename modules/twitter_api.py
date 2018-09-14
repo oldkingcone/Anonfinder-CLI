@@ -9,21 +9,21 @@ search_level = ""
 
 def output(message):
 
-    if utillities.getcm() == '':
+    if utillities.get_cm() == '':
         time.sleep(.1)
         print('> %s' % message)
         idle()
 
     else:
         time.sleep(.1)
-        print('>/%s/ %s' % (utillities.getcm(), message))
+        print('>/%s/ %s' % (utillities.get_cm(), message))
         idle()
 
 
 def idle():
 
-    if utillities.getcm() != '':
-        __response = input('>/%s/ ' % utillities.getcm())
+    if utillities.get_cm() != '':
+        __response = input('>/%s/ ' % utillities.get_cm())
         options(__response)
     else:
         __response = input('> ')
@@ -33,14 +33,17 @@ def idle():
 def options(response):
     if "show" in response:
 
-        output("you just used the show command wow and you thin is %s" % utillities.getcm())
+        output("you just used the show command wow and you thin is %s" % utillities.get_cm())
         idle()
-    if response == "exit":
+    elif response == "exit":
         os._exit(0)
-    if response == "back":
-        utillities.setcm('')
+    elif response == "back":
+        utillities.set_cm('')
         utillities.idle()
-
+    elif response == "Help" or "help":
+        output()
+    else:
+        output("Im sorry I didn't quite catch that.")
 
 
 def main():

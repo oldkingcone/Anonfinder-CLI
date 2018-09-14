@@ -3,14 +3,26 @@ import re
 import time
 from modules import twitter_api
 current_module = ''
+workspace = ''
+target_name = ''
+help_menu = "Command List: \n" \
+            "   To show this help screen, type 'help' or 'Help' \n" \
+            "   To use a module or script, type 'use= ' and after the equal sign the desired script \n"\
+            "   To exit the program, type 'exit' \n"
 
 
-def setcm(param):
+def get_info():
+    global workspace
+    global target_name
+    return workspace, target_name
+
+
+def set_cm(param):
     global current_module
     current_module = param
 
 
-def getcm():
+def get_cm():
     global current_module
     return current_module
 
@@ -44,7 +56,8 @@ def idle():
 
 def main_menu(response):
     if response == "Help" or response == "help":
-        output("This is the help screen")
+        global help_menu
+        output(help_menu)
         idle()
 # This command will select and set the current module so that its passed to the correct module handler.
     elif "use=" in response:
