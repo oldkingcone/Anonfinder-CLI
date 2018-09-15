@@ -40,14 +40,14 @@ def output(message):
 
     else:
         time.sleep(.1)
-        print('>/%s/ %s' % (current_module, message))
+        print('>[%s] %s' % (current_module, message))
         idle()
 
 
 def idle():
     global current_module
     if current_module != '':
-        __response = input('>/%s/ ' % current_module)
+        __response = input('>[%s] ' % current_module)
         main_menu(__response)
     else:
         __response = input('> ')
@@ -58,21 +58,28 @@ def main_menu(response):
     if response == "Help" or response == "help":
         global help_menu
         output(help_menu)
-        idle()
 # This command will select and set the current module so that its passed to the correct module handler.
-    elif "use=" in response:
-        global current_module
-        rand, __module = re.split('=', response)
-        current_module = __module
+    if "use=" in response:
+        try:
+            global current_module
+            rand, __module = re.split('=', response)
+            if __module == "twitter" or __module == "fullcontact":
+                current_module = __module
+            else:
+                output("oi use a real script.")
+        except ValueError:
+            output("Im sorry I didn't quite catch that")
+
         if __module == "twitter":
             while current_module == "twitter":
                 twitter_api.main()
         elif __module == "fullcontact":
                 pass
+        else:
+            output("Please use a real script.")
 # This command will exit the program with a 0 code.
     elif response == "exit":
         os._exit(0)
 # This will tell the user that they used an undefined command.
     else:
         output("Im sorry I didn't quite catch that")
-        idle()
