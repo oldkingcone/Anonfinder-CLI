@@ -2,8 +2,26 @@ from utilities import utillities
 import time
 import re
 import os
-target = ""
-search_level = ""
+target = "memes"
+search_level = "0"
+help_screen = "Static Commands: \n " \
+              "    help - Displays this screen. \n" \
+              "     show - Shows current configurations for this module. \n" \
+              "     back - Brings you back to the main screen to select other modules or " \
+              "     configure any global parameters. \n" \
+              "     exit - this command is a global command will work at any point to end AnonFinder. \n" \
+              "     run - this command will run the script with the current configurations that are set. \n" \
+              "     Dynamic Commands: \n" \
+              "     set= - This command will set any of the parameters ex. set=target=@twitter_handle. \n" \
+              "     *** Parameters are case sensitive! for target use target, all lowercase. \n" \
+              "     *** To set search level or search tpe, use sl in all lowercase.\n " \
+              "     The Search Levels:" \
+              "     0 - Basic search, it will look for the minimum amount of data for that user. \n" \
+              "     1 - Medium search, it will look for basic information and " \
+              "pull up the most recent 5 twitter posts. \n" \
+              "     2 -  Advanced search, This search will do all of the above and pull down any media from posts " \
+              "or profile pictures."
+commands = ["show", "help", "exit", "back", "run"]
 
 
 def get_target():
@@ -24,6 +42,10 @@ def set_target(param):
 def set_search_level(param):
     global search_level
     search_level = param
+
+
+def run():
+    output("Im running things owowo ")
 
 
 def output(message):
@@ -49,23 +71,41 @@ def idle():
         options(__response)
 
 
+def run():
+    output("Im running things owowo ")
+
+
 def options(response):
-    if response == "memes":
-        try:
-            command, option = re.split(response)
-        except ValueError:
-            output("Im sorry I didn't quite catch that")
-    if response == "denk":
-        output("wow thats a meme")
-    if response == "wow":
-        output("wooooooooooow")
-    if response == "exit":
-        os._exit(0)
-    if response == "back":
-        utillities.set_cm("")
-        output("returning back to main menu.")
+    if response in commands:
+        if response == "help":
+            output(help_screen)
+        if response == "exit":
+            os._exit(0)
+        if response == "back":
+            utillities.set_cm("")
+            utillities.output("returning to main menu")
+        if response == "show":
+            output("Current configurations: \n"
+                   "    current search level is: %s \n"
+                   "    current target is: %s \n" % (get_sl(), get_target()))
+        if response == "run":
+            run()
+    else:
+        if "set" in response:
+            try:
+                command, option, value = re.split('=', response)
+            except ValueError:
+                output("Error when processing set command")
+            if option == "target" or option == "sl":
+                if option == "target":
+                    set_target(value)
+                    output("Target has been set to: %s" % value)
+                elif option == "sl":
+                    pass
+
+            else:
+                output("value given is not an acceptable value.")
 
 
- 
 def main():
     idle()

@@ -5,10 +5,10 @@ from modules import twitter_api
 current_module = ''
 workspace = ''
 target_name = ''
-help_menu = "Command List: \n" \
-            "   To show this help screen, type 'help' or 'Help' \n" \
-            "   To use a module or script, type 'use= ' and after the equal sign the desired script \n"\
-            "   To exit the program, type 'exit' \n"
+help_menu = "Commands: \n" \
+            "   help -  Displays the help screen.\n" \
+            "   exit - Will exit out of AnonFinder. \n" \
+            "   use= - This command will select a script to use ex. use=twitter"
 
 
 def get_info():
