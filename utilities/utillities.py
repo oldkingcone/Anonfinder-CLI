@@ -1,14 +1,31 @@
 import os
 import re
 import time
+import platform
 from modules import twitter_api
 current_module = ''
 workspace = ''
 target_name = ''
+
 help_menu = "Commands: \n" \
             "   help -  Displays the help screen.\n" \
             "   exit - Will exit out of AnonFinder. \n" \
-            "   use= - This command will select a script to use ex. use=twitter"
+            "   clear - to clear the screen (global command) \n" \
+            "   use= - This command will select a script to use ex. use=twitter \n" \
+            "   ***This is not a terminal emulator, commands will not work here only the commands provided will.\n" \
+            "   ***AnonFinder does not have multi command usage, you will have to type each command when setting" \
+            " parameters. \n" \
+            "   Scripts available: \n" \
+            "   * Twitter as twitter        * FullContact as fullcontact \n" \
+            "   * Facebook as facebook      * Have I Been Pwned as hibp \n" \
+            "   * Linkedin as link          * WhitePages as wp \n" \
+            "   * Google as google " \
+
+
+
+def get_os_name():
+    operating_system = platform.system()
+    return operating_system
 
 
 def get_info():
@@ -77,6 +94,16 @@ def main_menu(response):
                 pass
         else:
             output("Please use a real script.")
+    if response == "clear":
+        if get_os_name() == "Windows":
+            os.system('cls')
+            idle()
+        elif get_os_name() == "Linux":
+            os.system("clear")
+            idle()
+        else:
+            os.system("clear")
+            idle()
 # This command will exit the program with a 0 code.
     elif response == "exit":
         os._exit(0)
