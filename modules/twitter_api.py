@@ -3,8 +3,13 @@ import time
 import re
 import os
 import platform
-target = "memes"
-search_level = "0"
+import twitter
+import json
+import datetime
+
+target = ""
+key_path = "key/twitter/twitter.txt"
+search_level = 0
 help_screen = "Static Commands: \n " \
               "    help - Displays this screen. \n" \
               "     show - Shows current configurations for this module. \n" \
@@ -50,11 +55,6 @@ def set_search_level(param):
     search_level = param
 
 
-def run():
-    output("Running on current configurations . . .\n"
-           "Currnet Level is: %s, and Target is: %s" % (get_sl(), get_target()))
-
-
 def output(message):
 
     if utillities.get_cm() == '':
@@ -76,10 +76,71 @@ def idle():
     else:
         __response = input('> ')
         options(__response)
+# new methods go below this line
+
+
+def fetch_key(key_type):
+
+    path = '..\key/twitter/twitter.txt'
+    file = open(key_path, "r")
+    keys = file.read()
+    con, cons, tk, tks = re.split('\n', keys)
+
+    if key_type == "con":
+        return con
+    if key_type == "cons":
+        return cons
+    if key_type == "tk":
+        return tk
+    if key_type == "tks":
+        return tks
+
+
+def data_output(data):
+    now = datetime.datetime.now()
+    if search_0():
+        # make the raw output file of the search
+        day = now.day
+        month = now.month
+        year = now.year
+        date = str('%s-%s-%s' % (year, month, day))
+        file_name = 'twitter_scan-%s.json' % date
+        path = '../workspace/%s' % ()
+        pass
+        # make the compiled data file based on search level
+
+
+
+def search_0():
+    api = twitter.Api(consumer_key='pmd0zX8lkypJnT0qDhDJLpzTa',
+                      consumer_secret='JDpQWXMDbm76yvVcBZhN0jR1mGQJMnbHl7E9fZHVgm6VZ7zhzx',
+                      access_token_key='966140731214594048-mR057HZkJc8Cjlop450d7Ss9IAA0Inq',
+                      access_token_secret='rI3Bp6GAnjRwTJ7u68bS5RU79jUZtxmnCXxLKLBPcW7xL')
+    try:
+        response = api.GetUser(screen_name=target, return_json=True)
+    except Exception:
+        output("Im sorry but there was an error searching for that person.")
+
+    data = json.dumps(response, indent=4)
+    data_output(data)
+
+
+def search_1():
+    pass
+
+
+def search_2():
+    pass
 
 
 def run():
-    output("Im running things owowo ")
+    # output("Running on current configurations . . .\n"
+           # "Currnet Level is: %s, and Target is: %s" % (get_sl(), get_target()))
+
+    if get_sl() == 0:
+        search_0()
+    else:
+        output("Something went wrong :( ")
 
 
 def options(response):
@@ -118,7 +179,8 @@ def options(response):
                     set_target(value)
                     output("Target has been set to: %s" % value)
                 elif option == "sl":
-                    pass
+                    set_search_level(option)
+                    output("Search level is now set to: %s " % option)
 
             else:
                 output("value given is not an acceptable value.")
@@ -126,3 +188,6 @@ def options(response):
 
 def main():
     idle()
+
+
+

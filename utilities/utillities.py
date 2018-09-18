@@ -4,8 +4,7 @@ import time
 import platform
 from modules import twitter_api
 current_module = ''
-workspace = ''
-target_name = ''
+profile_name = ''
 
 help_menu = "Commands: \n" \
             "   help -  Displays the help screen.\n" \
@@ -29,9 +28,8 @@ def get_os_name():
 
 
 def get_info():
-    global workspace
-    global target_name
-    return workspace, target_name
+    global profile_name
+    return profile_name
 
 
 def set_cm(param):
@@ -42,10 +40,6 @@ def set_cm(param):
 def get_cm():
     global current_module
     return current_module
-
-
-def fetch_keys():
-    pass
 
 
 def output(message):
