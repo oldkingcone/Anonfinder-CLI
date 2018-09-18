@@ -112,10 +112,7 @@ def data_output(data):
 
 
 def search_0():
-    api = twitter.Api(consumer_key='pmd0zX8lkypJnT0qDhDJLpzTa',
-                      consumer_secret='JDpQWXMDbm76yvVcBZhN0jR1mGQJMnbHl7E9fZHVgm6VZ7zhzx',
-                      access_token_key='966140731214594048-mR057HZkJc8Cjlop450d7Ss9IAA0Inq',
-                      access_token_secret='rI3Bp6GAnjRwTJ7u68bS5RU79jUZtxmnCXxLKLBPcW7xL')
+    api = twitter.Api()
     try:
         response = api.GetUser(screen_name=target, return_json=True)
     except Exception:
