@@ -105,7 +105,7 @@ def data_output(data):
         year = now.year
         date = str('%s-%s-%s' % (year, month, day))
         file_name = 'twitter_scan-%s.json' % date
-        path = '../workspace/%s' % ()
+        path = '../workspace/%s' % utillities.get_info()
         pass
         # make the compiled data file based on search level
 
@@ -136,6 +136,7 @@ def run():
 
     if get_sl() == 0:
         search_0()
+
     else:
         output("Something went wrong :( ")
 
@@ -181,6 +182,7 @@ def options(response):
 
             else:
                 output("value given is not an acceptable value.")
+
 
 
 def main():

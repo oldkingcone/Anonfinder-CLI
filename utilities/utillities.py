@@ -3,8 +3,10 @@ import re
 import time
 import platform
 from modules import twitter_api
+import shutil
 current_module = ''
 profile_name = ''
+commands = ["help", "exit", "clear", "show", "list"]
 
 help_menu = "Commands: \n" \
             "   help -  Displays the help screen.\n" \
@@ -25,6 +27,11 @@ help_menu = "Commands: \n" \
 def get_os_name():
     operating_system = platform.system()
     return operating_system
+
+
+def set_info(param):
+    global profile_name
+    profile_name = param
 
 
 def get_info():
@@ -66,41 +73,80 @@ def idle():
 
 
 def main_menu(response):
-    if response == "Help" or response == "help":
-        global help_menu
-        output(help_menu)
-# This command will select and set the current module so that its passed to the correct module handler.
-    if "use=" in response:
-        try:
-            global current_module
-            rand, __module = re.split('=', response)
-            if __module == "twitter" or __module == "fullcontact":
-                current_module = __module
+    if response in commands:
+        if response == "help":
+            output(help_menu)
+        if response == "exit":
+            os._exit(0)
+        if response == "clear":
+            if get_os_name() == "linux":
+                os.system("clear")
+                idle()
+            if get_os_name() == "Windows":
+                os.system("cls")
+                idle()
             else:
-                output("oi use a real script.")
-        except ValueError:
+                os.system("clear")
+                idle()
+        if response == "show":
+            output("Selected profile is: %s" % get_info())
+        if response == "list":
+            dirs = os.listdir("workspaces/")
+            output("Valid profiles within the workspace directory: %s" % dirs)
+
+    else:
+        if "mkp" in response:
+            try:
+                command, profile = re.split("=", response)
+            except ValueError:
+                output("Error when processing command.")
+            try:
+                os.mkdir("workspaces/%s" % profile)
+                output("Profile folder has been created for : %s" % profile)
+            except FileExistsError or PermissionError:
+                output("Error when creating profile.")
+        if "use" in response:
+            try:
+                command, option = re.split("=", response)
+            except ValueError:
+                output("error when processing use command")
+
+            if option == "twitter":
+                set_cm("twitter")
+                while current_module == get_cm():
+                    twitter_api.idle()
+        if "set" in response:
+            try:
+                command, option, value = re.split("=", response)
+            except ValueError:
+                output("error when processing set command")
+            if option == "profile":
+                if os.path.exists("workspaces/%s" % value):
+                    set_info(value)
+                    output("%s is now the selected profile" % value)
+                else:
+                    output("Please use a profile that is within the workspace directory")
+            else:
+                output("error value not found")
+        if "remove" in response:
+            try:
+                command, option, value = re.split("=", response)
+            except ValueError:
+                output("Error when processing remove command")
+
+            if option == "PROFILE":
+                if os.path.exists("workspaces/%s/" % value):
+                    try:
+                        shutil.rmtree("workspaces/%s" % value)
+                    except PermissionError:
+                        output("invalid permissions to remove profile and its content")
+                else:
+                    pass
+
+        else:
             output("Im sorry I didn't quite catch that")
 
-        if __module == "twitter":
-            while current_module == "twitter":
-                twitter_api.main()
-        elif __module == "fullcontact":
-                pass
-        else:
-            output("Please use a real script.")
-    if response == "clear":
-        if get_os_name() == "Windows":
-            os.system('cls')
-            idle()
-        elif get_os_name() == "Linux":
-            os.system("clear")
-            idle()
-        else:
-            os.system("clear")
-            idle()
-# This command will exit the program with a 0 code.
-    elif response == "exit":
-        os._exit(0)
-# This will tell the user that they used an undefined command.
-    else:
-        output("Im sorry I didn't quite catch that")
+
+
+
+
