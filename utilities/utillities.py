@@ -54,6 +54,10 @@ def get_cm():
     return current_module
 
 
+def straight(msg):
+    print('* %s \r' % msg)
+
+
 def output(message):
     global current_module
     if current_module == '':
@@ -149,6 +153,31 @@ def main_menu(response):
                 else:
                     output("Im sorry there was an error")
                     idle()
+        if "view" in response:
+            if get_info() == "":
+                output("Please specify a profile by setting it with the set command.")
+            else:
+                try:
+                    command, option, modules, value = re.split("=", response)
+                except ValueError:
+                    output("Error when processing the view command.")
+
+                if option == "files":
+                    content = os.listdir("workspaces/%s/%s/" % (get_info(), modules))
+                    output(content)
+                else:
+                    pass
+
+                if option == "data":
+                    path = "workspaces/%s/%s/%s" % (get_info(), modules, value)
+                    with open(path) as file:
+                        for line in file.readlines():
+                            straight(line)
+                    idle()
+                else:
+                    pass
+
+
 
         else:
             output("Im sorry I didn't quite catch that")

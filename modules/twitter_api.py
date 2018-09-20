@@ -110,7 +110,6 @@ def data_output(data):
         # make the compiled data file based on search level
 
 
-
 def search_0():
     api = twitter.Api()
     try:
@@ -153,7 +152,9 @@ def options(response):
         if response == "show":
             output("Current configurations: \n"
                    "    current search level is: %s \n"
-                   "    current target is: %s \n" % (get_sl(), get_target()))
+                   "    current target is: %s \n"
+                   "    current profile: %s" % (get_sl(), get_target(), utillities.get_info()))
+
         if response == "run":
             run()
         if response == "clear":
@@ -185,11 +186,8 @@ def options(response):
                             output("Invalid level")
                     except ValueError:
                         output("Invalid usage")
-
-
             else:
                 output("value given is not an acceptable value.")
-
 
 
 def main():
