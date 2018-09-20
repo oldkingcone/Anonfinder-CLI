@@ -1,4 +1,4 @@
-from utilities import utillities
+import utilities.utillities as util
 import time
 import re
 import os
@@ -57,21 +57,21 @@ def set_search_level(param):
 
 def output(message):
 
-    if utillities.get_cm() == '':
+    if util.get_cm() == '':
         time.sleep(.1)
         print('> %s' % message)
         idle()
 
     else:
         time.sleep(.1)
-        print('>[%s] %s' % (utillities.get_cm(), message))
+        print('>[%s] %s' % (util.get_cm(), message))
         idle()
 
 
 def idle():
 
-    if utillities.get_cm() != '':
-        __response = input('>[%s] ' % utillities.get_cm())
+    if util.get_cm() != '':
+        __response = input('>[%s] ' % util.get_cm())
         options(__response)
     else:
         __response = input('> ')
@@ -105,9 +105,10 @@ def data_output(data):
         year = now.year
         date = str('%s-%s-%s' % (year, month, day))
         file_name = 'twitter_scan-%s.json' % date
-        path = '../workspace/%s' % utillities.get_info()
+        path = '../workspace/%s' % util.get_info()
         pass
         # make the compiled data file based on search level
+
 
 
 def search_0():
@@ -147,13 +148,13 @@ def options(response):
         if response == "exit":
             os._exit(0)
         if response == "back":
-            utillities.set_cm("")
-            utillities.output("returning to main menu")
+            util.set_cm("")
+            util.output("returning to main menu")
         if response == "show":
             output("Current configurations: \n"
                    "    current search level is: %s \n"
                    "    current target is: %s \n"
-                   "    current profile: %s" % (get_sl(), get_target(), utillities.get_info()))
+                   "    current profile: %s" % (get_sl(), get_target(), util.get_info()))
 
         if response == "run":
             run()

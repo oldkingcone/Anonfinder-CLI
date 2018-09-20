@@ -2,7 +2,7 @@ import os
 import re
 import time
 import platform
-from modules import twitter_api
+import modules.twitter_api as twitter
 import shutil
 current_module = ''
 profile_name = ''
@@ -123,7 +123,7 @@ def main_menu(response):
             if option == "twitter":
                 set_cm("twitter")
                 while current_module == get_cm():
-                    twitter_api.idle()
+                    twitter.idle()
         if "set" in response:
             try:
                 command, option, value = re.split("=", response)
