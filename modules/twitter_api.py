@@ -21,7 +21,7 @@ help_screen = "Static Commands: \n " \
               "     set= - This command will set any of the parameters ex. set=target=@twitter_handle. \n" \
               "     *** Parameters are case sensitive! for target use target, all lowercase. \n" \
               "     *** To set search level or search type, use sl in all lowercase.\n " \
-              "     The Search Levels:" \
+              "     The Search Levels: \n" \
               "     0 - Basic search, it will look for the minimum amount of data for that user. \n" \
               "     1 - Medium search, it will look for basic information and " \
               "pull up the most recent 5 twitter posts. \n" \
@@ -177,8 +177,15 @@ def options(response):
                     set_target(value)
                     output("Target has been set to: %s" % value)
                 elif option == "sl":
-                    set_search_level(option)
-                    output("Search level is now set to: %s " % option)
+                    try:
+                        if int(value) <= 2 & int(value) >= 0:
+                            set_search_level(value)
+                            output("Search level is now set to: %s " % value)
+                        else:
+                            output("Invalid level")
+                    except ValueError:
+                        output("Invalid usage")
+
 
             else:
                 output("value given is not an acceptable value.")

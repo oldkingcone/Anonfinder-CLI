@@ -13,6 +13,11 @@ help_menu = "Commands: \n" \
             "   exit - Will exit out of AnonFinder. \n" \
             "   clear - to clear the screen (global command) \n" \
             "   use= - This command will select a script to use ex. use=twitter \n" \
+            "   list - Lists profiles within the workspaces directory. \n" \
+            "   show - displays currently selected profile to be used. \n" \
+            "   mkp= - makes profile within the workspaces directory ex. mkp=filename \n" \
+            "   remove - this command removes a profile ex. remove=PROFILE=profile_name \n" \
+            "   set= - this command sets the profile to be used. ex. set=profile=profile_name \n" \
             "   ***This is not a terminal emulator, commands will not work here only the commands provided will.\n" \
             "   ***AnonFinder does not have multi command usage, you will have to type each command when setting" \
             " parameters. \n" \
@@ -140,8 +145,10 @@ def main_menu(response):
                         shutil.rmtree("workspaces/%s" % value)
                     except PermissionError:
                         output("invalid permissions to remove profile and its content")
+                    idle()
                 else:
-                    pass
+                    output("Im sorry there was an error")
+                    idle()
 
         else:
             output("Im sorry I didn't quite catch that")
