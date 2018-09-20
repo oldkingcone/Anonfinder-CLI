@@ -1,4 +1,4 @@
-import utilities.utillities as util
+import sys
 import time
 import re
 import os
@@ -6,7 +6,8 @@ import platform
 import twitter
 import json
 import datetime
-
+sys.path.append(os.path.abspath(os.path.join('..', 'utillities')))
+from utilities.utillities import *
 target = ""
 key_path = "key/twitter/twitter.txt"
 search_level = 0
@@ -55,27 +56,27 @@ def set_search_level(param):
     search_level = param
 
 
-def output(message):
+def m_output(message):
 
-    if util.get_cm() == '':
+    if get_cm() == '':
         time.sleep(.1)
         print('> %s' % message)
-        idle()
+        m_idle()
 
     else:
         time.sleep(.1)
-        print('>[%s] %s' % (util.get_cm(), message))
-        idle()
+        print('>[%s] %s' % (get_cm(), message))
+        m_idle()
 
 
-def idle():
+def m_idle():
 
-    if util.get_cm() != '':
-        __response = input('>[%s] ' % util.get_cm())
-        options(__response)
+    if get_cm() != '':
+        __response = input('>[%s] ' % get_cm())
+        m_options(__response)
     else:
         __response = input('> ')
-        options(__response)
+        m_options(__response)
 # new methods go below this line
 
 
@@ -105,7 +106,7 @@ def data_output(data):
         year = now.year
         date = str('%s-%s-%s' % (year, month, day))
         file_name = 'twitter_scan-%s.json' % date
-        path = '../workspace/%s' % util.get_info()
+        path = '../workspace/%s' % get_info()
         pass
         # make the compiled data file based on search level
 
@@ -141,58 +142,56 @@ def run():
         output("Something went wrong :( ")
 
 
-def options(response):
+def m_options(response):
     if response in commands:
         if response == "help":
-            output(help_screen)
+            m_output(help_screen)
         if response == "exit":
             os._exit(0)
         if response == "back":
-            util.set_cm("")
-            util.output("returning to main menu")
+            set_cm("")
+            m_output("returning to main menu")
         if response == "show":
-            output("Current configurations: \n"
-                   "    current search level is: %s \n"
-                   "    current target is: %s \n"
-                   "    current profile: %s" % (get_sl(), get_target(), util.get_info()))
+            m_output("Current configurations: \n", "    current search level is: %s \n", "    current target is: %s \n",
+                     "    current profile: %s" % (get_sl(), get_target(), get_info()))
 
         if response == "run":
             run()
         if response == "clear":
             if get_os_name() == "Windows":
                 os.system('cls')
-                idle()
+                m_idle()
             elif get_os_name() == "Linux":
                 os.system("clear")
-                idle()
+                m_idle()
             else:
                 os.system("clear")
-                idle()
+                m_idle()
     else:
         if "set" in response:
             try:
                 command, option, value = re.split('=', response)
             except ValueError:
-                output("Error when processing set command")
+                m_output("Error when processing set command")
             if option == "target" or option == "sl":
                 if option == "target":
                     set_target(value)
-                    output("Target has been set to: %s" % value)
+                    m_output("Target has been set to: %s" % value)
                 elif option == "sl":
                     try:
                         if int(value) <= 2 & int(value) >= 0:
                             set_search_level(value)
-                            output("Search level is now set to: %s " % value)
+                            m_output("Search level is now set to: %s " % value)
                         else:
-                            output("Invalid level")
+                            m_output("Invalid level")
                     except ValueError:
-                        output("Invalid usage")
+                        m_output("Invalid usage")
             else:
-                output("value given is not an acceptable value.")
+                m_output("value given is not an acceptable value.")
 
 
 def main():
-    idle()
+    m_idle()
 
 
 
