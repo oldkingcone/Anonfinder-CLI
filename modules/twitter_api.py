@@ -6,8 +6,8 @@ import platform
 import twitter
 import json
 import datetime
-sys.path.append(os.path.abspath(os.path.join('..', 'utillities')))
-from utilities.utillities import *
+sys.path.insert(0, 'anonfinder-cli/utilities')
+from utilities import utillities
 target = ""
 key_path = "key/twitter/twitter.txt"
 search_level = 0
@@ -56,23 +56,23 @@ def set_search_level(param):
     search_level = param
 
 
-def m_output(message):
+def output(message):
 
-    if get_cm() == '':
+    if utillities.get_cm() == '':
         time.sleep(.1)
         print('> %s' % message)
-        m_idle()
+        idle()
 
     else:
         time.sleep(.1)
-        print('>[%s] %s' % (get_cm(), message))
-        m_idle()
+        print('>[%s] %s' % (utillities.get_cm(), message))
+        idle()
 
 
-def m_idle():
+def idle():
 
-    if get_cm() != '':
-        __response = input('>[%s] ' % get_cm())
+    if utillities.get_cm() != '':
+        __response = input('>[%s] ' % utillities.get_cm())
         m_options(__response)
     else:
         __response = input('> ')
@@ -106,7 +106,7 @@ def data_output(data):
         year = now.year
         date = str('%s-%s-%s' % (year, month, day))
         file_name = 'twitter_scan-%s.json' % date
-        path = '../workspace/%s' % get_info()
+        path = '../workspace/%s' % utillities.get_info()
         pass
         # make the compiled data file based on search level
 
@@ -145,53 +145,55 @@ def run():
 def m_options(response):
     if response in commands:
         if response == "help":
-            m_output(help_screen)
+            output(help_screen)
         if response == "exit":
             os._exit(0)
         if response == "back":
-            set_cm("")
-            m_output("returning to main menu")
+            utillities.set_cm("")
+            output("returning to main menu")
         if response == "show":
-            m_output("Current configurations: \n", "    current search level is: %s \n", "    current target is: %s \n",
-                     "    current profile: %s" % (get_sl(), get_target(), get_info()))
+            output("Current Configurations: \n"
+                   "    Current profile: %s \n"
+                   "    Target @name: %s \n"
+                   "    Current search level: %s" % (utillities.get_info(), get_target(), get_sl()))
 
         if response == "run":
             run()
         if response == "clear":
             if get_os_name() == "Windows":
                 os.system('cls')
-                m_idle()
+                idle()
             elif get_os_name() == "Linux":
                 os.system("clear")
-                m_idle()
+                idle()
             else:
                 os.system("clear")
-                m_idle()
+                idle()
     else:
         if "set" in response:
             try:
                 command, option, value = re.split('=', response)
             except ValueError:
-                m_output("Error when processing set command")
+                output("Error when processing set command")
             if option == "target" or option == "sl":
                 if option == "target":
                     set_target(value)
-                    m_output("Target has been set to: %s" % value)
+                    output("Target has been set to: %s" % value)
                 elif option == "sl":
                     try:
                         if int(value) <= 2 & int(value) >= 0:
                             set_search_level(value)
-                            m_output("Search level is now set to: %s " % value)
+                            output("Search level is now set to: %s " % value)
                         else:
-                            m_output("Invalid level")
+                            output("Invalid level")
                     except ValueError:
-                        m_output("Invalid usage")
+                        output("Invalid usage")
             else:
-                m_output("value given is not an acceptable value.")
+                output("value given is not an acceptable value.")
 
 
 def main():
-    m_idle()
+    idle()
 
 
 
