@@ -136,7 +136,7 @@ def main_menu(response):
                 else:
                     output("Please use a profile that is within the workspace directory")
             else:
-                output("error value not found")
+                output("Invalid syntax and or error when processing")
         if "remove" in response:
             try:
                 command, option, value = re.split("=", response)

@@ -6,6 +6,7 @@ import platform
 import twitter
 import json
 import datetime
+import random
 sys.path.insert(0, 'anonfinder-cli/utilities')
 from utilities import utillities
 target = ""
@@ -97,6 +98,59 @@ def fetch_key(key_type):
         return tks
 
 
+def strip(path):
+    now = datetime.datetime.now()
+    day = now.day
+    month = now.month
+    year = now.year
+    file_id = str(random.randint())
+    date = str('%s-%s-%s-%s' % (year, month, day, file_id))
+    medium = "name", "screen_name", "description", "location", "profile_location", "url", "entities"
+    basic = ['name', 'screen_name', 'description']
+
+    with open(path) as data:
+        __data = json.load(data)
+
+    if get_sl() == 0:
+        try:
+            __report = "scan-%s.txt"
+            os.open(__report, os.O_CREAT)
+        except PermissionError:
+            output("Could not create report")
+        except FileExistsError:
+            if get_sl() == 0:
+                search_0()
+            elif get_sl() == 1:
+                search_1()
+            else:
+                search_2()
+
+        with open(__report) as report:
+
+            for keyword in basic:
+                a_data = __data.get(keyword)
+                report.write(a_data)
+    elif get_sl() == 0:
+        try:
+            __report = "scan-%s.txt"
+            os.open(__report, os.O_CREAT)
+        except PermissionError:
+            output("Could not create report")
+        except FileExistsError:
+            if get_sl() == 0:
+                search_0()
+            elif get_sl() == 1:
+                search_1()
+            else:
+                search_2()
+
+        with open(__report) as report:
+
+            for keyword in medium:
+                a_data = __data.get(keyword)
+                report.write(a_data)
+
+
 def data_output(data):
     now = datetime.datetime.now()
     if search_0():
@@ -104,12 +158,24 @@ def data_output(data):
         day = now.day
         month = now.month
         year = now.year
-        date = str('%s-%s-%s' % (year, month, day))
+        file_id = str(random.randint())
+        date = str('%s-%s-%s-%s' % (year, month, day, file_id))
         file_name = 'twitter_scan-%s.json' % date
-        path = '../workspace/%s' % utillities.get_info()
-        pass
-        # make the compiled data file based on search level
+        path2p = '../workspace/%s' % utillities.get_info()
+        path = '%s/%s' % (path2p, file_name)
+        try:
+            os.open(path, os.O_CREAT)
+            strip(path)
+        except PermissionError:
+            output("There was an error when generating the full report.")
 
+        except FileExistsError:
+            if get_sl() == 0:
+                search_0()
+            elif get_sl() == 1:
+                search_1()
+            else:
+                search_2()
 
 
 def search_0():
@@ -132,8 +198,8 @@ def search_2():
 
 
 def run():
-    # output("Running on current configurations . . .\n"
-           # "Currnet Level is: %s, and Target is: %s" % (get_sl(), get_target()))
+    output("Running on current configurations . . .\n"
+           "Currnet Level is: %s, and Target is: %s" % (get_sl(), get_target()))
 
     if get_sl() == 0:
         search_0()
@@ -150,7 +216,7 @@ def m_options(response):
             os._exit(0)
         if response == "back":
             utillities.set_cm("")
-            output("returning to main menu")
+            utillities.output("returning to main menu")
         if response == "show":
             output("Current Configurations: \n"
                    "    Current profile: %s \n"
