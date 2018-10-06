@@ -177,12 +177,8 @@ def main_menu(response):
                 else:
                     pass
 
-
-
         else:
             output("Im sorry I didn't quite catch that")
-
-
 
 
 

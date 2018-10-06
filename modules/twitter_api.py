@@ -7,8 +7,9 @@ import twitter
 import json
 import datetime
 import random
+
 sys.path.insert(0, 'anonfinder-cli/utilities')
-from utilities import utillities
+from utilities import utilities
 target = ""
 key_path = "key/twitter/twitter.txt"
 search_level = 0
@@ -59,21 +60,21 @@ def set_search_level(param):
 
 def output(message):
 
-    if utillities.get_cm() == '':
+    if utilities.get_cm() == '':
         time.sleep(.1)
         print('> %s' % message)
         idle()
 
     else:
         time.sleep(.1)
-        print('>[%s] %s' % (utillities.get_cm(), message))
+        print('>[%s] %s' % (utilities.get_cm(), message))
         idle()
 
 
 def idle():
 
-    if utillities.get_cm() != '':
-        __response = input('>[%s] ' % utillities.get_cm())
+    if utilities.get_cm() != '':
+        __response = input('>[%s] ' % utilities.get_cm())
         m_options(__response)
     else:
         __response = input('> ')
@@ -83,7 +84,6 @@ def idle():
 
 def fetch_key(key_type):
 
-    path = '..\key/twitter/twitter.txt'
     file = open(key_path, "r")
     keys = file.read()
     con, cons, tk, tks = re.split('\n', keys)
@@ -129,7 +129,7 @@ def strip(path):
 
             for keyword in basic:
                 a_data = __data.get(keyword)
-                report.write(a_data)
+                report.write("%s : %s \n" % (keyword, a_data))
     elif get_sl() == 0:
         try:
             __report = "scan-%s.txt"
@@ -161,10 +161,13 @@ def data_output(data):
         file_id = str(random.randint())
         date = str('%s-%s-%s-%s' % (year, month, day, file_id))
         file_name = 'twitter_scan-%s.json' % date
-        path2p = '../workspace/%s' % utillities.get_info()
+        path2p = '../workspace/%s' % utilities.get_info()
         path = '%s/%s' % (path2p, file_name)
         try:
             os.open(path, os.O_CREAT)
+            with open(path, 'w') as file:
+                file.write(data)
+
             strip(path)
         except PermissionError:
             output("There was an error when generating the full report.")
@@ -179,7 +182,7 @@ def data_output(data):
 
 
 def search_0():
-    api = twitter.Api()
+    api = twitter.Api(fetch_key("con"), fetch_key("cons"), fetch_key("tk"), fetch_key("tks"))
     try:
         response = api.GetUser(screen_name=target, return_json=True)
     except Exception:
@@ -215,13 +218,13 @@ def m_options(response):
         if response == "exit":
             os._exit(0)
         if response == "back":
-            utillities.set_cm("")
-            utillities.output("returning to main menu")
+            utilities.set_cm("")
+            utilities.output("returning to main menu")
         if response == "show":
             output("Current Configurations: \n"
                    "    Current profile: %s \n"
                    "    Target @name: %s \n"
-                   "    Current search level: %s" % (utillities.get_info(), get_target(), get_sl()))
+                   "    Current search level: %s" % (utilities.get_info(), get_target(), get_sl()))
 
         if response == "run":
             run()
@@ -260,6 +263,9 @@ def m_options(response):
 
 def main():
     idle()
+
+
+
 
 
 

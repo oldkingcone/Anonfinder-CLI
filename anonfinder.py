@@ -1,4 +1,4 @@
-from utilities import utillities
+from utilities import utilities
 import os
 import sys
 import subprocess
@@ -6,9 +6,9 @@ packages = ["python-twitter"]
 
 
 def clear():
-    if utillities.get_os_name() == "linux":
+    if utilities.get_os_name() == "linux":
         os.system("clear")
-    if utillities.get_os_name() == "Windows":
+    if utilities.get_os_name() == "Windows":
         os.system("cls")
     else:
         os.system("clear")
@@ -46,8 +46,8 @@ def main():
 
     dir_check()
 
-    utillities.output("Welcome to Anonfinder, The CLI version, to get started type 'help'. ")
-    utillities.idle()
+    utilities.output("Welcome to Anonfinder, The CLI version, to get started type 'help'. ")
+    utilities.idle()
 
 
 if __name__ == '__main__':
