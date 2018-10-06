@@ -169,7 +169,7 @@ def main_menu(response):
                     pass
 
                 if option == "data":
-                    path = "workspaces/%s/%s/%s" % (get_info(), modules, value)
+                    path = f"workspaces/{get_info()}/{modules}/{value}"
                     with open(path) as file:
                         for line in file.readlines():
                             straight(line)
