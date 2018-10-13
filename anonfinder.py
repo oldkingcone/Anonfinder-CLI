@@ -1,54 +1,44 @@
 from utilities import utilities
-import os
-import sys
-import subprocess
-packages = ["python-twitter"]
+import re
 
 
-def clear():
-    if utilities.get_os_name() == "linux":
-        os.system("clear")
-    if utilities.get_os_name() == "Windows":
-        os.system("cls")
-    else:
-        os.system("clear")
+class AnonFinder(utilities.Options):
+    phone_number = ""
+    email = ""
+    name = ""
+    def __init__(self):
+        self.check()
+        self.menu()
+
+    def check(self):
+        pass
+
+    def menu(self):
+        while self.alive:
+            response = self.get_input()
+
+            if response == "help":
+                self.output("OI IT WORKED")
+            elif response == "exit":
+                self.exit()
+            elif response == "clear":
+                self.clear()
+            elif response == "show":
+                self.output("Phone: %s \n  email: %s \n  name: %s" % (self.phone_number, self.email, self.name))
+            elif "phone=" in response:
+                command, value = re.split("=", response)
+                if len(value) == 10:
+                    try:
+                        checker = int(value)
+                        self.phone_number = value
+                    except ValueError:
+                        self.output("Please use only Digit values")
+                else:
+                    self.output("Please make sure you use a full US number")
+            elif "email=" in response:
+
+                if "@" in response and ".com":
+                    self.email = response
 
 
-def raw_out(msg):
-    print('## %s ##' % msg)
-
-
-def mdl_check():
-    reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
-    installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
-    for module in packages:
-        if module in installed_packages:
-            return True
-        else:
-            return False
-
-
-def dir_check():
-
-    if os.path.exists("workspaces/"):
-        raw_out("Workspaces directory loaded . . .")
-    else:
-        raw_out("workspaces directory not found, recreating. . .")
-        os.mkdir('workspaces')
-
-
-def main():
-    if mdl_check():
-        raw_out("All packages have been detected . . .")
-    else:
-        raw_out("Not all package requirements were met, please install proper packages before running this again. . . ")
-        sys.exit(0)
-
-    dir_check()
-
-    utilities.output("Welcome to Anonfinder, The CLI version, to get started type 'help'. ")
-    utilities.idle()
-
-
-if __name__ == '__main__':
-    main()
+AnonFinder = AnonFinder()
