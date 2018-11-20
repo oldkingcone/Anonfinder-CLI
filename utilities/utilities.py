@@ -1,8 +1,12 @@
 import os
 import platform
-import time
-current_module = ""
 import re
+from modules import whitepages
+from modules import twitter_api
+from modules import fullcontact
+
+current_module = ""
+
 
 class Options:
     custom_help = ""
@@ -29,13 +33,13 @@ class Options:
                 else:
                     return user_input
 
-    def output(self, msg):
+    @staticmethod
+    def output(msg):
         if current_module != "":
             print(">[%s] %s " % (current_module, msg))
 
         else:
             print("> %s" % msg)
-
 
     @staticmethod
     def clear():
@@ -77,10 +81,20 @@ class Options:
         return file
 
 
+class RunningManager:
+    def __init__(self, first=None, last=None, phone=None, email=None, twitter=None, facebook=None, google=None):
+        self.first = first
+        self.last = last
+        self.phone = phone
+        self.email = email
+        self.email = email
+        self.twitter = twitter
+        self.facebook = facebook
+        self.google = google
 
-
-
-def run_manager(email, phone, name):
-    """"First stage of searching, parsing through data with FullContact and WhitePages to pull further information"""
+    def run(self):
+        twitter_api.auto_search()
+        whitepages.auto_run()
+        fullcontact.main()
 
 

@@ -1,2 +1,2 @@
-def solo_run():
+def auto_run():
     pass

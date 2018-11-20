@@ -7,10 +7,15 @@ import shutil
 
 
 class AnonFinder(utilities.Options):
+    depth = None
+    twitter = ""
+    google_query = ""
+    facebook = ""
     modules = ["FaceBook", "FullContact", "Google", "HIBP", "Linkedin", "Twitter", "WhitePages"]
     phone_number = ""
     email = ""
-    name = ""
+    first = ""
+    last = ""
     custom_help = "  list - Displays valid profiles to select from. \n   " \
                   "show - shows current configurations.\n   " \
                   "mkprofile=**** - Creates a profile within the workspaces directory.\n   " \
@@ -35,70 +40,43 @@ class AnonFinder(utilities.Options):
         while self.alive:
             response = self.get_input()
 
-            if response == "help":
-                self.help()
             if response == "exit":
                 self.exit()
-            if response == "clear":
-                self.clear()
-            if response == "show":
-                self.output("Profile: %s \n  Phone: %s \n  email: %s \n  name: %s" %
-                            (self.profile, self.phone_number, self.email, self.name))
-            if "phone=" in response:
-                command, value = re.split("=", response)
-                if len(value) == 10:
-                    self.phone_number = value
-                else:
-                    self.output("Something went wrong when setting the phone number")
-
-            if "email=" in response:
-                if "@" in response and ".com":
-                    command, value = re.split("=", response)
-                    self.email = value
-                else:
-                    self.output("There was an error setting the email")
-                    """This section will go into specific modules and perform specific scans"""
-
-            if "use=" in response:
-                __command, __value = re.split("=", response)
-                if response == "twitter":
-                    del self
             else:
                 pass
-            if "name=" in response:
-                command, value = re.split("=", response)
-                first, last = re.split(" ", value)
-                name = "%s %s" % (first, last)
-                self.name = name
 
-            if response == "run":
-                self.output("Running search with current configurations. . .")
-                utilities.run_manager(self.email, self.phone_number, self.name)
+            if response == "help":
+                self.help()
+            else:
+                pass
 
-            if "mkprofile=" in response:
-                self.make_profile(response)
+            if response == "clear":
+                self.clear()
+            else:
+                pass
+
+            if response == "show":
+                self.output("\n Selected profile: workspaces/%s \n First Name: %s \n Last Name: %s \n Email: %s "
+                            "\n Phone: %s" % (self.profile, self.first, self.last, self.email, self.phone_number))
+            else:
+                pass
 
             if "stprofile=" in response:
-                command, value = re.split("=", response)
-                if value in self.r_list():
-                    self.profile = value
-                else:
-                    self.output("Please use a profile within the workspace directory, use the list command to view "
-                                "profiles.")
-            if response == "list":
-                self.list()
+                try:
+                    __garbage, __value = re.split('=', response)
+                    self.profile = __value
+                except ValueError:
+                    self.output("There was an error when setting the profile")
+            else:
+                pass
 
-            if "REMOVE=" in response:
-                command, value = re.split("=", response)
-                answer = input("> Are you sure you want to delete %s ?[y/n]" % value)
-                if answer == "y" or "yes":
-                    self.output("Okay deleting %s and all its data . . ." % value)
-                    try:
-                        shutil.rmtree("workspaces/%s" % value)
-                    except FileNotFoundError or PermissionError:
-                        pass
+            if response == "addkey":
+                confirmed = input("> would you like to add a key? [y/n]: ")
+                if confirmed == "y" or confirmed == "yes":
+                    self.output("you wanted to add a key")
                 else:
                     pass
+
 
 
 AnonFinder = AnonFinder()

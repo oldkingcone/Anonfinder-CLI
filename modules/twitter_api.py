@@ -153,81 +153,70 @@ def strip(path):
 
 def data_output(data):
     now = datetime.datetime.now()
-    if search_0():
-        # make the raw output file of the search
-        day = now.day
-        month = now.month
-        year = now.year
-        file_id = str(random.randint())
-        date = str('%s-%s-%s-%s' % (year, month, day, file_id))
-        file_name = 'twitter_scan-%s.json' % date
-        path2p = '../workspace/%s' % utilities.get_info()
-        path = '%s/%s' % (path2p, file_name)
-        try:
-            os.open(path, os.O_CREAT)
-            with open(path, 'w') as file:
-                file.write(data)
+
+    # make the raw output file of the search
+    day = now.day
+    month = now.month
+    year = now.year
+    file_id = str(random.randint())
+    date = str('%s-%s-%s-%s' % (year, month, day, file_id))
+    file_name = 'twitter_scan-%s.json' % date
+    path2p = '../workspace/%s' % utilities.get_info()
+    path = '%s/%s' % (path2p, file_name)
+    try:
+        os.open(path, os.O_CREAT)
+        with open(path, 'w') as file:
+            file.write(data)
 
             strip(path)
-        except PermissionError:
-            output("There was an error when generating the full report.")
+    except PermissionError:
+        output("There was an error when generating the full report.")
 
-        except FileExistsError:
-            if get_sl() == 0:
-                search_0()
-            elif get_sl() == 1:
-                search_1()
-            else:
-                search_2()
+    except FileExistsError:
+        pass
 
 
-def search_0():
+def auto_search(profile, handle):
     api = twitter.Api(fetch_key("con"), fetch_key("cons"), fetch_key("tk"), fetch_key("tks"))
     try:
-        response = api.GetUser(screen_name=target, return_json=True)
-    except Exception:
-        output("Im sorry but there was an error searching for that person.")
-
-    data = json.dumps(response, indent=4)
-    data_output(data)
-
-
-def search_1():
-    pass
-
-
-def search_2():
-    pass
+        pass
+    except ConnectionError:
+        pass
 
 
 def run():
-    output("Running on current configurations . . .\n"
-           "Currnet Level is: %s, and Target is: %s" % (get_sl(), get_target()))
-
-    if get_sl() == 0:
-        search_0()
-
-    else:
-        output("Something went wrong :( ")
+    output("Searching . . .")
+    auto_search()
 
 
 def m_options(response):
     if response in commands:
         if response == "help":
             output(help_screen)
+        else:
+            pass
+
         if response == "exit":
             os._exit(0)
+        else:
+            pass
         if response == "back":
             utilities.set_cm("")
             utilities.output("returning to main menu")
+        else:
+            pass
         if response == "show":
             output("Current Configurations: \n"
                    "    Current profile: %s \n"
                    "    Target @name: %s \n"
                    "    Current search level: %s" % (utilities.get_info(), get_target(), get_sl()))
+        else:
+            pass
 
         if response == "run":
             run()
+        else:
+            pass
         if response == "clear":
             if get_os_name() == "Windows":
                 os.system('cls')
@@ -238,6 +227,8 @@ def m_options(response):
             else:
                 os.system("clear")
                 idle()
+        else:
+            pass
     else:
         if "set" in response:
             try:
