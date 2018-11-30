@@ -81,6 +81,48 @@ class Options:
         return file
 
 
+class Twitter(Options):
+    def __init__(self, *profile):
+        self.menu()
+
+    def menu(self):
+        pass
+
+
+class AnonFinder(Options):
+    depth = None
+    twitter = ""
+    google_query = ""
+    facebook = ""
+    modules = ["FaceBook", "FullContact", "Google", "HIBP", "Linkedin", "Twitter", "WhitePages"]
+    phone_number = ""
+    email = ""
+    first = ""
+    last = ""
+    custom_help = "  list - Displays valid profiles to select from. \n   " \
+                  "show - shows current configurations.\n   " \
+                  "mkprofile=**** - Creates a profile within the workspaces directory.\n   " \
+                  "stprofile=**** - sets a valid profile to be used.\n   email=**** - sets target email.\n   " \
+                  "phone=**** - sets phone number.\n   name=First Last - sets target name.\n   " \
+                  "use=**** - this goes into a specific module menu to run only specific scans.\n   " \
+                  "REMOVE=**** - Deletes valid profiles within workspaces directory."
+
+    def __init__(self):
+        self.set_help(self.custom_help)
+        self.check()
+        self.output("Welcome to AnonFinder. Type 'help' to get started.")
+
+    def check(self):
+        pass
+
+    def __del__(self):
+        pass
+
+    def menu(self, user_input):
+        while self.alive:
+            print("I AM WORKING")
+
+
 class RunningManager:
     def __init__(self, first=None, last=None, phone=None, email=None, twitter=None, facebook=None, google=None):
         self.first = first
