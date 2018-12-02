@@ -5,8 +5,6 @@ from modules import whitepages
 from modules import twitter_api
 from modules import fullcontact
 
-current_module = ""
-
 
 class Options:
     custom_help = ""
@@ -14,32 +12,21 @@ class Options:
                 "exit - Exits AnonFinder"
     alive = True
     profile = ""
+    name = ""
 
     def __init__(self):
         pass
 
     def get_input(self):
 
-            if current_module != "":
-                user_input = str(input(">[%s] " % current_module))
-                if user_input == "":
-                    self.get_input()
-                else:
-                    return user_input
-            else:
-                user_input = str(input("> "))
+                user_input = str(input(">[%s]# " % self.name))
                 if user_input == "":
                     self.get_input()
                 else:
                     return user_input
 
-    @staticmethod
-    def output(msg):
-        if current_module != "":
-            print(">[%s] %s " % (current_module, msg))
-
-        else:
-            print("> %s" % msg)
+    def output(self, msg):
+            print(">[%s]# %s " % (self.name, msg))
 
     @staticmethod
     def clear():
@@ -81,14 +68,6 @@ class Options:
         return file
 
 
-class Twitter(Options):
-    def __init__(self, *profile):
-        self.menu()
-
-    def menu(self):
-        pass
-
-
 class AnonFinder(Options):
     depth = None
     twitter = ""
@@ -108,6 +87,7 @@ class AnonFinder(Options):
                   "REMOVE=**** - Deletes valid profiles within workspaces directory."
 
     def __init__(self):
+        self.name = "AnonFinder"
         self.set_help(self.custom_help)
         self.check()
         self.output("Welcome to AnonFinder. Type 'help' to get started.")
@@ -119,12 +99,23 @@ class AnonFinder(Options):
         pass
 
     def menu(self, user_input):
-        while self.alive:
-            print("I AM WORKING")
+        if user_input == "anon":
+            self.output("Anon")
+        else:
+            pass
+
+        if user_input == "clear":
+            self.clear()
+        else:
+            pass
+        if user_input == "help":
+            self.help()
+        else:
+            pass
 
 
 class RunningManager:
-    def __init__(self, first=None, last=None, phone=None, email=None, twitter=None, facebook=None, google=None):
+    def __init__(self, *first, last, phone=None, email=None, twitter=None, facebook=None, google=None):
         self.first = first
         self.last = last
         self.phone = phone
