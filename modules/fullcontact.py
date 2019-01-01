@@ -26,8 +26,8 @@ def get_twitter():
    # twitter = data_response.get("twitter")
     return get_twitter()
 
-def main(profile):
-    """Runs normally with User input manually"""
+def main():
+    print("I AM FULLCONTACT")
 
 
 

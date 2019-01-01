@@ -1,2 +1,2 @@
-def auto_run():
-    pass
+def main():
+    print("I AM WHITEPAGES")
