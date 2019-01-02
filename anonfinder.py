@@ -13,6 +13,13 @@ from utilities import utilities
 exclusion_list = []
 module_list = ["twitter", "fullcontact", "whitepages", "linkedin", "facebook"]
 value_dict = {"first_name": "", "last_name": "", "twitter": ""}
+about = "Anonfinder is a framework that will make information gathering on a particular individual easy by parsing \n" \
+        "through popular social media platforms and other data sources. This framework was written by Zero, you can\n" \
+        "find Tweets from zero here -> https://twitter.com/Zero_lyfe_00 and support him over on patreon!" \
+        "https://www.patreon.com/zerostudios ! \n" \
+        "Zero, possible other authors, and API sources are not accountable for what you do with the data and all \n" \
+        "Rules/Policies from said API sources should be followed! I have no accountability for what you use this\n" \
+        "tool for! Thank you for using AnonFinder <3"
 help_options = """help        displays this screen.
   make        creates a profile based on desired name, usage: 'make [PROFILE NAME]'.
   delete      deletes target profile, usage: 'delete [PROFILE NAME]'.
@@ -243,6 +250,9 @@ def main():
 
         elif user_input == "clear_fields":
             reset()
+
+        elif user_input == "about":
+            output(about)
 
         else:
             output("Sorry I didn't quite understand that.")
