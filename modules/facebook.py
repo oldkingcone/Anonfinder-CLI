@@ -1,20 +1,19 @@
-import twitter
 import os
 import re
 import platform
 import sys
 
 
-value_dict = {"twitter_handle": ""}
+value_dict = {"first_name": "", "middle_name": "", "last_name": ""}
 help_options = ""
 
 
 def help_menu():
-    output(help_options, "Twitter")
+    output(help_options, "Facebook")
 
 
 def exit_program():
-    output("Thank you for using AnonFinder! <3", "Twitter")
+    output("Thank you for using AnonFinder! <3", "Facebook")
     sys.exit(0)
 
 
@@ -37,12 +36,12 @@ def set_value(param):
 
         if attribute in value_dict:
             value_dict[attribute] = value
-            output("%s as been set to %s" % (attribute, value), "Twitter")
+            output("%s as been set to %s" % (attribute, value), "Facebook")
         else:
-            output("Refer to help list for available attributes.", "Twitter")
+            output("Refer to help list for available attributes.", "Facebook")
 
     except ValueError or TypeError:
-        output("Refer to help list on how to use set.", "Twitter")
+        output("Refer to help list on how to use set.", "Facebook")
 
 
 def list_profiles():
@@ -51,7 +50,7 @@ def list_profiles():
     for profile in os.listdir('workspace/'):
         __profile.append(profile)
 
-    output(__profile, "Twitter")
+    output(__profile, "Facebook")
     __profile.clear()
 
 
@@ -63,23 +62,22 @@ def output(msg, *prompt):
 
 
 def run():
-    # todo add keys later!!
-    api = twitter.Api()
-    api.GetUser()
+    pass
 
 
 def main():
-    output("Welcome to the Twitter module, type help to get started!", "Twitter")
-
+    output("Welcome to the Facebook module, type help to get started!", "Facebook")
     alive = True
     while alive:
-        user_input = input("[Twitter]> ")
+        user_input = input("[Facebook]> ")
 
         if user_input == "back":
             alive = False
+        elif user_input == "help":
+            help_menu()
 
-        elif user_input == "exit":
-            exit_program()
+        elif user_input == "clear":
+            clear()
 
         elif user_input == "list":
             list_profiles()
@@ -87,17 +85,14 @@ def main():
         elif "set" in user_input:
             set_value(user_input)
 
-        elif user_input == "clear":
-            clear()
+        elif user_input == "exit":
+            exit_program()
 
-        elif user_input == "help":
-            help_menu()
-
-        elif user_input == "show":
-            show()
+        elif user_input == "run":
+            run()
 
         else:
-            output("Sorry I didn't quite understand that.", "Twitter")
+            output("Sorry I didn't quite understand that.", "Facebook")
 
 
 if __name__ == '__main__':

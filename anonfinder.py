@@ -1,16 +1,18 @@
 from modules import twitter_api
 from modules import fullcontact
 from modules import whitepages
+from modules import facebook
+from modules import linked_in
 import sys
 import re
 import os
 import platform
 import shutil
-
+from utilities import utilities
 
 exclusion_list = []
-module_list = ["twitter", "fullcontact", "whitepages"]
-value_dict = {"first_name": "", "last_name": ""}
+module_list = ["twitter", "fullcontact", "whitepages", "linkedin", "facebook"]
+value_dict = {"first_name": "", "last_name": "", "twitter": ""}
 help_options = """help        displays this screen.
   make        creates a profile based on desired name, usage: 'make [PROFILE NAME]'.
   delete      deletes target profile, usage: 'delete [PROFILE NAME]'.
@@ -22,16 +24,30 @@ help_options = """help        displays this screen.
   exclude     excludes certain modules from run script to remove nonexistent bloat data, usage: 'exclude [MODULE]'.
   final       creates final report based off of scans already within target profile, usage: 'final [PROFILE]'.
   list        lists all valid profiles within workspace directory.
+  about       Shows information about AnonFinder.
   
   Available attributes:
     First name as 'first_name'
     Last name as 'last_name'
+    Twitter as twitter_handle
     
   Available modules:
     Twitter as 'twitter'
     FullContact as 'fullcontact'
     Whitepages as 'whitepages'
+    Linkedin as linkedin
+    Facebook as facebook
+    
+  Modules coming soon!(these modules require a paid key to access data)
+    Whitepages
 """
+
+
+def check():
+    if os.path.exists('workspace'):
+        pass
+    else:
+        os.mkdir('workspace')
 
 
 def greeting():
@@ -51,6 +67,11 @@ def make_profile(option):
 
         try:
             os.mkdir('workspace/%s' % profile)
+            try:
+                for module in module_list:
+                    os.mkdir("workspace/%s/%s" % (profile, module))
+            except FileExistsError or PermissionError:
+                output("Error when creating folders for module output!")
             output("%s profile has been created!" % profile)
         except FileExistsError or PermissionError:
             output("Failed to create profile directory %s!" % profile)
@@ -85,7 +106,11 @@ def final(param):
 
 
 def run():
-    pass
+    profile = utilities.Profile()
+    profile.First_name = value_dict["first_name"]
+    profile.Last_name = value_dict["last_name"]
+    profile.Twitter = value_dict["twitter"]
+    # todo plan out how profile objects attributes will be assigned and algorithm on data discovery.
 
 
 def list_profiles():
@@ -109,8 +134,13 @@ def use(option):
                 fullcontact.main()
             elif module == "whitepages":
                 whitepages.main()
+            elif module == "linkedin":
+                linked_in.main()
+            elif module == "facebook":
+                facebook.main()
+
         else:
-            output("%s is not a valid module, please refer to the help list for available modules.")
+            output("%s is not a valid module, please refer to the help list for available modules." % module)
 
     except ValueError or TypeError:
         output("Refer to help list on how to use 'use'.")
@@ -168,7 +198,7 @@ def reset():
 
 
 def main():
-
+    check()
     greeting()
     alive = True
 
