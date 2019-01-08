@@ -5,7 +5,7 @@ import platform
 import sys
 import time
 
-value_dict = {"twitter_handle": ""}
+value_dict = {"twitter_handle": "", "profile": ""}
 help_options = ""
 key_dict = {"consumer_key": "", "consumer_secret_key": "", "access_token_key": "", "access_token_secret": ""}
 
@@ -106,17 +106,7 @@ def output(msg, *prompt):
 
 
 def run():
-    output("running scan with target handle %s" % value_dict["twitter_handle"], "Twitter")
-    # Creating instance of Twitter API and passing credentials
-    try:
-        api = twitter.Api(consumer_key=key_dict["consumer_key"], consumer_secret=key_dict["consumer_secret_key"],
-                          access_token_key=key_dict["access_token_key"],
-                          access_token_secret=key_dict["access_token_secret"])
-    except ConnectionError or twitter.TwitterError:
-        output("No keys were detected!", "Twitter")
-    # fetching relevant data from user profile
-    request = api.GetFollowers(screen_name=value_dict["twitter_handle"], count=10)
-
+    pass
 
 def main():
     output("Welcome to the Twitter module, type help to get started!", "Twitter")
