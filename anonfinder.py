@@ -1,4 +1,4 @@
-from modules import twitter_api
+from modules import twitter
 from modules import fullcontact
 from modules import whitepages
 from modules import facebook
@@ -43,15 +43,8 @@ help_options = """help        displays this screen.
 """
 
 
-def check():
-    if os.path.exists('workspace'):
-        pass
-    else:
-        os.mkdir('workspace')
-
-
 def greeting():
-    output('Welcome to AnonFinder, type help to get started \n  written by zero')
+    output('Welcome to AnonFinder, type help to get started.')
 
 
 def output(msg, *prompt):
@@ -129,7 +122,7 @@ def use(option):
 
         if module in module_list:
             if module == "twitter":
-                twitter_api.main()
+                twitter.main()
             elif module == "fullcontact":
                 fullcontact.main()
             elif module == "whitepages":
@@ -198,7 +191,6 @@ def reset():
 
 
 def main():
-    check()
     greeting()
     alive = True
 

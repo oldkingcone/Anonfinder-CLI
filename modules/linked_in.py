@@ -102,7 +102,3 @@ def main():
 
         else:
             output("Sorry I didn't quite understand that.", "Linkedin")
-
-
-if __name__ == '__main__':
-    main()
